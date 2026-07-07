@@ -11,14 +11,24 @@ import { withBase } from "../consts";
 
 <BaseLayout>
   <section class="hero">
-    <span class="kicker">Database Decision Map</span>
+    <span class="kicker">Database Field Guide</span>
     <h1 class="hero-title">数据库不是选择题，是架构问题</h1>
-    <p class="hero-subtitle">
-      从业务场景、数据模型和运维成本出发，选择数据库和组合方案。
-    </p>
+    <p class="hero-subtitle">一个纯静态数据库知识地图：场景、流程、组合、矩阵、术语和项目架构手册。</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href={withBase("decision/")}>开始选型</a>
-      <a class="btn" href={withBase("stacks/")}>查看架构方案</a>
+      <a class="btn btn-primary" href={withBase("flows/")}>查看选型流程</a>
+      <a class="btn" href={withBase("playbooks/")}>查看项目手册</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <h2 class="section-title">静态能力模块</h2>
+      <div class="decision-grid">
+        <a class="decision-card" href={withBase("flows/")}><h3>选型流程</h3><p>把数据库选择拆成问题链和判断规则。</p></a>
+        <a class="decision-card" href={withBase("stacks/")}><h3>架构组合</h3><p>主库、搜索、向量、图谱、分析如何组合。</p></a>
+        <a class="decision-card" href={withBase("playbooks/")}><h3>项目手册</h3><p>按真实项目类型查看最小方案和升级路径。</p></a>
+        <a class="decision-card" href={withBase("glossary/")}><h3>术语地图</h3><p>理解 OLTP、RAG、RDF、OLAP 等核心概念。</p></a>
+      </div>
     </div>
   </section>
 
@@ -27,39 +37,26 @@ import { withBase } from "../consts";
       <h2 class="section-title">常见场景入口</h2>
     </div>
     <div class="scenario-list">
-      {scenarios.map((s) => (
-        <div class="scenario-card">
-          <h3><a href={withBase(`scenarios/#${s.slug}`)}>{s.title}</a></h3>
-          <p>{s.description}</p>
-          <div class="scenario-recs">{s.recommendations.map((r) => <span class="scenario-rec">{r.name}</span>)}</div>
-        </div>
-      ))}
+      {scenarios.map((s) => <div class="scenario-card"><h3><a href={withBase(`scenarios/#${s.slug}`)}>{s.title}</a></h3><p>{s.description}</p><div class="scenario-recs">{s.recommendations.map((r) => <span class="scenario-rec">{r.name}</span>)}</div></div>)}
     </div>
   </section>
 
   <section class="section">
     <div class="section-inner">
       <h2 class="section-title">数据库分类</h2>
-      <div class="cat-nav">
-        {categories.map((cat) => <a href={withBase(`categories/#${cat.slug}`)} class="cat-nav-item">{cat.name}</a>)}
-      </div>
+      <div class="cat-nav">{categories.map((cat) => <a href={withBase(`categories/#${cat.slug}`)} class="cat-nav-item">{cat.name}</a>)}</div>
     </div>
   </section>
 
   <section class="section">
     <div class="section-inner">
       <h2 class="section-title">架构方案</h2>
-      <p class="section-lead">真实项目通常是主库、搜索、向量、分析、图谱等组件组合。</p>
-      <div class="decision-grid">
-        {solutionBundles.slice(0, 6).map((s) => <a class="decision-card" href={withBase(`stacks/#${s.slug}`)}><h3>{s.shortTitle}</h3><p>{s.description}</p></a>)}
-      </div>
+      <div class="decision-grid">{solutionBundles.slice(0, 6).map((s) => <a class="decision-card" href={withBase(`stacks/#${s.slug}`)}><h3>{s.shortTitle}</h3><p>{s.description}</p></a>)}</div>
     </div>
   </section>
 
   <section class="section">
-    <div class="section-inner">
-      <h2 class="section-title">全部数据库（{databases.length}）</h2>
-    </div>
+    <div class="section-inner"><h2 class="section-title">全部数据库（{databases.length}）</h2></div>
     <SearchAndFilter databases={databases} />
     <div class="db-grid">{databases.map((db) => <DatabaseCard db={db} />)}</div>
   </section>
