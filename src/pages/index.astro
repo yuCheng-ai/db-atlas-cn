@@ -5,64 +5,62 @@ import SearchAndFilter from "../components/SearchAndFilter.astro";
 import { databases } from "../data/databases";
 import { categories } from "../data/categories";
 import { scenarios } from "../data/scenarios";
+import { solutionBundles } from "../data/solutions";
 import { withBase } from "../consts";
 ---
 
 <BaseLayout>
-  <!-- Hero -->
   <section class="hero">
-    <h1 class="hero-title">数据库选型地图</h1>
+    <span class="kicker">Database Decision Map</span>
+    <h1 class="hero-title">数据库不是选择题，是架构问题</h1>
     <p class="hero-subtitle">
-      面向开发者、Agent 系统和企业数据平台的数据库选择指南。了解不同数据库的特性、适用场景和组合方案。
+      从业务场景、数据模型和运维成本出发，选择数据库和组合方案。
     </p>
-  </section>
-
-  <!-- 分类导航 -->
-  <section class="section-inner" style="padding-bottom: 0;">
-    <h2 class="section-title">浏览分类</h2>
-    <div class="cat-nav">
-      {categories.map((cat) => (
-        <a href={withBase(`categories/#${cat.slug}`)} class="cat-nav-item">
-          {cat.name}
-        </a>
-      ))}
+    <div class="hero-actions">
+      <a class="btn btn-primary" href={withBase("decision/")}>开始选型</a>
+      <a class="btn" href={withBase("stacks/")}>查看架构方案</a>
     </div>
   </section>
 
-  <!-- 按场景选型入口 -->
   <section class="section">
     <div class="section-inner">
-      <h2 class="section-title">
-        按场景选型
-      </h2>
+      <h2 class="section-title">常见场景入口</h2>
     </div>
     <div class="scenario-list">
       {scenarios.map((s) => (
         <div class="scenario-card">
           <h3><a href={withBase(`scenarios/#${s.slug}`)}>{s.title}</a></h3>
           <p>{s.description}</p>
-          <div class="scenario-recs">
-            {s.recommendations.map((r) => (
-              <span class="scenario-rec">{r.name}</span>
-            ))}
-          </div>
+          <div class="scenario-recs">{s.recommendations.map((r) => <span class="scenario-rec">{r.name}</span>)}</div>
         </div>
       ))}
     </div>
   </section>
 
-  <!-- 数据库卡片列表 -->
   <section class="section">
     <div class="section-inner">
-      <h2 class="section-title">
-        全部数据库（{databases.length}）
-      </h2>
+      <h2 class="section-title">数据库分类</h2>
+      <div class="cat-nav">
+        {categories.map((cat) => <a href={withBase(`categories/#${cat.slug}`)} class="cat-nav-item">{cat.name}</a>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <h2 class="section-title">架构方案</h2>
+      <p class="section-lead">真实项目通常是主库、搜索、向量、分析、图谱等组件组合。</p>
+      <div class="decision-grid">
+        {solutionBundles.slice(0, 6).map((s) => <a class="decision-card" href={withBase(`stacks/#${s.slug}`)}><h3>{s.shortTitle}</h3><p>{s.description}</p></a>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <h2 class="section-title">全部数据库（{databases.length}）</h2>
     </div>
     <SearchAndFilter databases={databases} />
-    <div class="db-grid">
-      {databases.map((db) => (
-        <DatabaseCard db={db} />
-      ))}
-    </div>
+    <div class="db-grid">{databases.map((db) => <DatabaseCard db={db} />)}</div>
   </section>
 </BaseLayout>
