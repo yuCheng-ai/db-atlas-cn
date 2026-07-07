@@ -1,0 +1,81 @@
+.flow-section,
+.playbook-card {
+  margin-bottom: var(--space-2xl);
+}
+
+.flow-list,
+.playbook-grid,
+.glossary-grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.flow-card {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  background: var(--c-surface);
+}
+
+.flow-index {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--c-primary);
+}
+
+.flow-card p,
+.playbook-card p,
+.glossary-card p {
+  color: var(--c-text-secondary);
+  line-height: 1.8;
+}
+
+.playbook-card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+}
+
+.playbook-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.playbook-grid > div,
+.glossary-card {
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+}
+
+.playbook-grid ul {
+  padding-left: var(--space-lg);
+  color: var(--c-text-secondary);
+  line-height: 1.8;
+}
+
+.boundary-box {
+  margin-top: var(--space-lg);
+  padding: var(--space-md);
+  border-radius: var(--radius);
+  background: #f0f4ff;
+  color: var(--c-text-secondary);
+}
+
+.glossary-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.glossary-card h2 {
+  margin: var(--space-sm) 0;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 700px) {
+  .flow-card {
+    grid-template-columns: 1fr;
+  }
+}
