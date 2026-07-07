@@ -1,0 +1,49 @@
+---
+import { withBase } from "../consts";
+import { type Database } from "../data/databases";
+import { categories as categoryData, type Category } from "../data/categories";
+
+interface Props {
+  db: Database;
+}
+
+const { db } = Astro.props;
+
+function getCategoryName(slug: string): string {
+  return categoryData.find((c) => c.slug === slug)?.name ?? slug;
+}
+
+function difficultyClass(level: string): string {
+  if (level === "低") return "easy";
+  if (level === "中") return "medium";
+  return "hard";
+}
+
+function maturityClass(level: string): string {
+  if (level === "企业级") return "enterprise";
+  if (level === "成熟") return "stable";
+  return "experimental";
+}
+---
+<article class="db-card" data-slug={db.slug}>
+  <div class="db-card-header">
+    <h3 class="db-card-name">
+      <a href={withBase(`databases/${db.slug}/`)}>{db.name}</a>
+    </h3>
+    <span class={`db-card-difficulty ${difficultyClass(db.difficulty)}`}>
+      {db.difficulty === "低" ? "入门" : db.difficulty === "中" ? "进阶" : "高级"}
+    </span>
+  </div>
+  <p class="db-card-summary">{db.summary}</p>
+  <div class="db-card-tags">
+    {db.categories.map((cat) => (
+      <span class="db-card-tag">{getCategoryName(cat)}</span>
+    ))}
+  </div>
+  <div class="db-card-meta">
+    <span class={`db-card-maturity ${maturityClass(db.maturity)}`}>
+      {db.maturity}
+    </span>
+    {db.license && <span>{db.license}</span>}
+  </div>
+</article>

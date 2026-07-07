@@ -1,0 +1,56 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { databases } from "../../data/databases";
+import { categories } from "../../data/categories";
+import { withBase } from "../../consts";
+
+function getCategoryName(slug: string): string {
+  return categories.find((c) => c.slug === slug)?.name ?? slug;
+}
+---
+
+<BaseLayout title="全部数据库" description="浏览所有收录的数据库条目">
+  <section class="hero" style="padding-bottom: var(--space-lg);">
+    <h1 class="hero-title" style="font-size: 2rem;">全部数据库</h1>
+    <p class="hero-subtitle">
+      共收录 {databases.length} 个数据库，按名称排列
+    </p>
+  </section>
+
+  <div class="section-inner" style="padding-bottom: var(--space-2xl);">
+    <table style="width: 100%; border-collapse: collapse; font-size: 0.92rem;">
+      <thead>
+        <tr style="border-bottom: 2px solid var(--c-border); text-align: left;">
+          <th style="padding: 10px var(--space-sm);">名称</th>
+          <th style="padding: 10px var(--space-sm);">分类</th>
+          <th style="padding: 10px var(--space-sm);">一句话定位</th>
+          <th style="padding: 10px var(--space-sm);">难度</th>
+          <th style="padding: 10px var(--space-sm);">成熟度</th>
+        </tr>
+      </thead>
+      <tbody>
+        {databases.map((db) => (
+          <tr style="border-bottom: 1px solid var(--c-border);">
+            <td style="padding: 10px var(--space-sm);">
+              <a href={withBase(`databases/${db.slug}/`)} style="font-weight: 600;">
+                {db.name}
+              </a>
+            </td>
+            <td style="padding: 10px var(--space-sm);">
+              {db.categories.map((c) => getCategoryName(c)).join(" / ")}
+            </td>
+            <td style="padding: 10px var(--space-sm); color: var(--c-text-secondary);">
+              {db.summary}
+            </td>
+            <td style="padding: 10px var(--space-sm);">
+              {db.difficulty}
+            </td>
+            <td style="padding: 10px var(--space-sm);">
+              {db.maturity}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</BaseLayout>

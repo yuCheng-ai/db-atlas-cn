@@ -1,0 +1,106 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../consts";
+
+interface LearningStep {
+  name: string;
+  slug?: string;
+  note?: string;
+}
+
+interface LearningPath {
+  title: string;
+  audience: string;
+  steps: LearningStep[];
+}
+
+const paths: LearningPath[] = [
+  {
+    title: "后端开发者路径",
+    audience: "面向有编程基础、想系统学习数据库的后端开发者",
+    steps: [
+      { name: "SQLite", slug: "sqlite", note: "零配置上手 SQL，学习关系模型基础" },
+      { name: "PostgreSQL", slug: "postgresql", note: "掌握生产级关系型数据库、索引优化、事务管理" },
+      { name: "Redis", slug: "redis", note: "学习缓存策略、数据结构存储和高性能读写" },
+      { name: "Elasticsearch", slug: "elasticsearch", note: "理解全文搜索、倒排索引和日志分析" },
+      { name: "ClickHouse", slug: "clickhouse", note: "深入 OLAP 分析、列式存储和数据仓库" },
+    ],
+  },
+  {
+    title: "Agent / AI 应用路径",
+    audience: "面向构建 AI Agent、RAG 应用的开发者",
+    steps: [
+      { name: "PostgreSQL", slug: "postgresql", note: "业务数据和元数据的主存储" },
+      { name: "Qdrant / Milvus", note: "向量相似度检索，构建语义搜索和 RAG 知识库" },
+      { name: "Meilisearch / OpenSearch", note: "关键词检索和混合搜索，分词和相关性排序" },
+      { name: "Apache Jena Fuseki", slug: "apache-jena-fuseki", note: "知识图谱和本体建模，SPARQL 语义查询" },
+    ],
+  },
+  {
+    title: "企业数据平台路径",
+    audience: "面向构建企业级数据基础设施的平台工程师",
+    steps: [
+      { name: "PostgreSQL", slug: "postgresql", note: "业务系统主库和事务处理" },
+      { name: "DuckDB", slug: "duckdb", note: "本地分析和数据探索，快速 SQL 分析" },
+      { name: "ClickHouse", slug: "clickhouse", note: "实时分析引擎，构建数据仓库和分析层" },
+      { name: "OpenSearch", slug: "opensearch", note: "日志分析、搜索和可观测性" },
+      { name: "Apache Airflow / dbt", note: "数据管道编排和数据建模（非数据库，生态组件）" },
+    ],
+  },
+  {
+    title: "知识图谱 / 本体路径",
+    audience: "面向从事知识工程、本体建模、语义 Web 的开发者",
+    steps: [
+      { name: "RDF 基础", note: "理解三元组、URI、命名图和 RDF Schema 基础概念" },
+      { name: "Apache Jena Fuseki", slug: "apache-jena-fuseki", note: "实践 RDF 存储和 SPARQL 查询" },
+      { name: "SPARQL 查询", note: "掌握 SPARQL 1.1：SELECT、CONSTRUCT、ASK、DESCRIBE" },
+      { name: "RDF4J / GraphDB", note: "深入 Java 生态 RDF 框架或企业级推理引擎" },
+      { name: "Neo4j 对比", slug: "neo4j", note: "了解属性图模型和 Cypher，对比 RDF 和 LPG 的各自优势" },
+    ],
+  },
+];
+
+function stepHref(step: LearningStep): string {
+  if (step.slug) return withBase(`databases/${step.slug}/`);
+  return "";
+}
+---
+
+<BaseLayout title="学习路径" description="按角色和目标推荐数据库学习路径">
+  <section class="hero" style="padding-bottom: var(--space-xl);">
+    <h1 class="hero-title" style="font-size: 2rem;">学习路径</h1>
+    <p class="hero-subtitle">
+      按不同角色和目标，循序渐进地学习数据库技术
+    </p>
+  </section>
+
+  <div class="path-list" style="padding-bottom: var(--space-2xl);">
+    {paths.map((path) => (
+      <div class="path-card">
+        <h3>{path.title}</h3>
+        <p style="color: var(--c-text-muted); font-size: 0.85rem; margin-bottom: var(--space-md);">
+          👥 {path.audience}
+        </p>
+        <ol class="path-steps">
+          {path.steps.map((step, idx) => [
+            idx > 0 ? <span class="path-arrow">→</span> : null,
+            <li class="path-step">
+              {step.slug ? (
+                <a href={stepHref(step)} style="color: inherit; text-decoration: none;">
+                  {step.name}
+                </a>
+              ) : (
+                step.name
+              )}
+              {step.note && (
+                <span style="display: block; font-size: 0.72rem; color: var(--c-text-muted); font-weight: 400; margin-top: 2px;">
+                  {step.note}
+                </span>
+              )}
+            </li>
+          ])}
+        </ol>
+      </div>
+    ))}
+  </div>
+</BaseLayout>

@@ -1,0 +1,37 @@
+---
+import { BASE, SITE_TITLE, withBase } from "../consts";
+
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+  { href: BASE, label: "首页" },
+  { href: withBase("databases/"), label: "数据库" },
+  { href: withBase("scenarios/"), label: "按场景选型" },
+  { href: withBase("categories/"), label: "分类" },
+  { href: withBase("learning-path/"), label: "学习路径" },
+  { href: withBase("about/"), label: "关于" },
+];
+
+function isActive(href: string): boolean {
+  return currentPath === href || (href !== BASE && currentPath.startsWith(href));
+}
+---
+<nav class="nav">
+  <div class="nav-inner">
+    <a href={BASE} class="nav-logo">
+      <span class="nav-logo-icon">🗺️</span>
+      {SITE_TITLE}
+    </a>
+    <ul class="nav-links">
+      {
+        navItems.map((item) => (
+          <li>
+            <a href={item.href} class={isActive(item.href) ? "active" : ""}>
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</nav>

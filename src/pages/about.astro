@@ -1,0 +1,123 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="关于项目"
+  description="数据库选型地图 — 面向开发者的中文数据库选择指南"
+>
+  <section class="hero" style="padding-bottom: var(--space-xl);">
+    <h1 class="hero-title" style="font-size: 2rem;">关于项目</h1>
+    <p class="hero-subtitle">
+      数据库选型地图 · Database Field Guide CN
+    </p>
+  </section>
+
+  <div class="prose" style="padding-bottom: var(--space-2xl);">
+    <section class="about-section">
+      <h2>项目目标</h2>
+      <p>
+        数据库选型地图是一份面向中文开发者的数据库选择指南。它不是排行榜，也不是性能基准测试，
+        而是一份帮助你理解不同数据库设计理念、适用场景和组合方案的实用参考。
+      </p>
+      <p>
+        无论你是为创业项目选择第一个数据库，还是为企业数据平台评估技术栈，
+        或是为 AI Agent 构建知识库后端，这里都提供了结构化的信息和建议。
+      </p>
+    </section>
+
+    <section class="about-section">
+      <h2>设计原则</h2>
+      <ul>
+        <li>
+          <strong>场景优先：</strong>没有「最好」的数据库，只有最适合当前场景的选择。我们强调「适合什么」和「不适合什么」。
+        </li>
+        <li>
+          <strong>中文原生：</strong>所有说明用中文撰写，面向中文开发者的阅读习惯和认知框架。
+        </li>
+        <li>
+          <strong>信息密度：</strong>卡片化和结构化展示，让读者快速定位关键信息。
+        </li>
+        <li>
+          <strong>透明来源：</strong>明确标注数据来源，区分「常识信息」「官方文档摘要」和「社区经验」。
+        </li>
+      </ul>
+    </section>
+
+    <section class="about-section">
+      <h2>内容版权原则</h2>
+      <ul>
+        <li>
+          <strong>不复制商业排名：</strong>本项目不复制 DB-Engines 等商业网站的排名、评分、描述和比较内容。
+          所有数据库条目均为人工整理，基于官方文档摘要、公开信息（Wikipedia、GitHub）和开源社区的常识性认知。
+        </li>
+        <li>
+          <strong>尊重开源许可：</strong>引用的开源数据和描述保留原始许可证说明。
+        </li>
+        <li>
+          <strong>人工撰写：</strong>数据库的一句定位、场景分析、组合建议等由项目维护者撰写，反映中文社区的实践认知。
+        </li>
+        <li>
+          <strong>可修正：</strong>如果发现事实性错误或过时信息，欢迎通过 GitHub Issue 或 PR 反馈。
+        </li>
+      </ul>
+    </section>
+
+    <section class="about-section">
+      <h2>数据来源</h2>
+      <ul>
+        <li>数据库官方文档和官方网站</li>
+        <li>GitHub 仓库（README、Release Notes）</li>
+        <li>开源社区公认的技术分类和常识</li>
+        <li>中文技术社区的最佳实践总结</li>
+      </ul>
+    </section>
+
+    <section class="about-section">
+      <h2>技术栈</h2>
+      <p>
+        本项目使用 <a href="https://astro.build/" target="_blank" rel="noopener">Astro</a> +
+        TypeScript 构建为纯静态站点，部署在 GitHub Pages 上。所有数据库数据以 TypeScript
+        静态文件维护，可手动编辑和版本控制。
+      </p>
+    </section>
+
+    <section class="about-section">
+      <h2>贡献指南</h2>
+      <p>
+        欢迎通过以下方式贡献：
+      </p>
+      <ul>
+        <li>添加新的数据库条目（编辑 <code>src/data/databases.ts</code>）</li>
+        <li>修正事实性错误或更新过时信息</li>
+        <li>改进分类和场景推荐</li>
+        <li>完善学习路径内容</li>
+      </ul>
+      <p style="margin-top: var(--space-md);">
+        📦 GitHub：<a href="https://github.com/yuCheng-ai/db-atlas-cn" target="_blank" rel="noopener">yuCheng-ai/db-atlas-cn</a>
+      </p>
+    </section>
+
+    <section class="about-section">
+      <h2>后续计划</h2>
+      <ul>
+        <li>补充更多数据库条目（图数据库、流处理引擎、NewSQL 等）</li>
+        <li>增加数据库比较矩阵视图</li>
+        <li>添加数据库版本历史和生态工具链介绍</li>
+        <li>支持从开源数据源批量导入（保留来源和许可证）</li>
+        <li>增加 Dark Mode 支持</li>
+        <li>社区贡献的数据库评测和实战经验</li>
+      </ul>
+    </section>
+
+    <section class="about-section">
+      <h2>许可证</h2>
+      <p>
+        网站代码遵循 MIT License。文档和数据库条目内容遵循
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">
+          CC BY 4.0
+        </a> 许可。
+      </p>
+    </section>
+  </div>
+</BaseLayout>

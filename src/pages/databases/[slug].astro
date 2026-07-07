@@ -1,0 +1,195 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { databases, type Database } from "../../data/databases";
+import { categories, type Category } from "../../data/categories";
+import { withBase } from "../../consts";
+
+export function getStaticPaths() {
+  return databases.map((db) => ({
+    params: { slug: db.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const db = databases.find((d) => d.slug === slug) as Database | undefined;
+
+if (!db) {
+  return Astro.redirect(withBase(""));
+}
+
+function getCategoryName(slug: string): string {
+  return categories.find((c) => c.slug === slug)?.name ?? slug;
+}
+
+function getCategoryDesc(slug: string): string {
+  return categories.find((c) => c.slug === slug)?.description ?? "";
+}
+
+const relatedDbs = db.related
+  .map((r) => databases.find((d) => d.slug === r))
+  .filter(Boolean) as Database[];
+
+function difficultyFull(level: string): string {
+  if (level === "低") return "低（入门友好）";
+  if (level === "中") return "中（需要一定基础）";
+  return "高（需要深入学习）";
+}
+---
+
+<BaseLayout title={db.name} description={db.summary}>
+  <div class="detail-header">
+    <div class="detail-header-inner">
+      <div class="breadcrumb">
+        <a href={withBase("")}>首页</a><span>/</span>
+        <span>{db.name}</span>
+      </div>
+      <h1 class="detail-name">{db.name}</h1>
+      <p class="detail-summary">{db.summary}</p>
+      <div class="detail-tags">
+        {db.categories.map((cat) => (
+          <a href={withBase(`categories/#${cat}`)} class="filter-tag">{getCategoryName(cat)}</a>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-body">
+    <!-- 基本信息 -->
+    <section class="detail-section">
+      <h2>基本信息</h2>
+      <dl class="detail-meta-grid">
+        {db.language && (
+          <div class="detail-meta-item">
+            <dt>主要语言</dt>
+            <dd>{db.language}</dd>
+          </div>
+        )}
+        {db.license && (
+          <div class="detail-meta-item">
+            <dt>许可证</dt>
+            <dd>{db.license}</dd>
+          </div>
+        )}
+        <div class="detail-meta-item">
+          <dt>学习难度</dt>
+          <dd>{difficultyFull(db.difficulty)}</dd>
+        </div>
+        <div class="detail-meta-item">
+          <dt>成熟度</dt>
+          <dd>{db.maturity}</dd>
+        </div>
+        {db.deployment.length > 0 && (
+          <div class="detail-meta-item">
+            <dt>部署方式</dt>
+            <dd>{db.deployment.join(" / ")}</dd>
+          </div>
+        )}
+      </dl>
+    </section>
+
+    <!-- 数据库分类说明 -->
+    <section class="detail-section">
+      <h2>数据库分类</h2>
+      {db.categories.map((cat) => (
+        <div style="margin-bottom: 12px;">
+          <strong>{getCategoryName(cat)}</strong>
+          <p style="color: var(--c-text-secondary); font-size: 0.9rem; margin-top: 4px;">
+            {getCategoryDesc(cat)}
+          </p>
+        </div>
+      ))}
+    </section>
+
+    <!-- 适合场景 -->
+    <section class="detail-section">
+      <h2>适合场景</h2>
+      <ul>
+        {db.goodFor.map((item) => <li>{item}</li>)}
+      </ul>
+    </section>
+
+    <!-- 不适合场景 -->
+    <section class="detail-section">
+      <h2>不适合场景</h2>
+      <ul>
+        {db.badFor.map((item) => <li>{item}</li>)}
+      </ul>
+    </section>
+
+    <!-- 典型用途 -->
+    <section class="detail-section">
+      <h2>典型用途</h2>
+      <ul>
+        {db.typicalUseCases.map((item) => <li>{item}</li>)}
+      </ul>
+    </section>
+
+    <!-- 与相近数据库的区别 -->
+    {db.vsAlternatives && (
+      <section class="detail-section">
+        <h2>与相近数据库的区别</h2>
+        <p style="color: var(--c-text-secondary); line-height: 1.8;">
+          {db.vsAlternatives}
+        </p>
+      </section>
+    )}
+
+    <!-- 常见组合 -->
+    {db.commonCombinations && db.commonCombinations.length > 0 && (
+      <section class="detail-section">
+        <h2>常见组合</h2>
+        <ul>
+          {db.commonCombinations.map((item) => <li>{item}</li>)}
+        </ul>
+      </section>
+    )}
+
+    <!-- 学习建议 -->
+    {db.learningTip && (
+      <section class="detail-section">
+        <h2>学习建议</h2>
+        <p style="color: var(--c-text-secondary); line-height: 1.8;">
+          {db.learningTip}
+        </p>
+      </section>
+    )}
+
+    <!-- 相关数据库 -->
+    {relatedDbs.length > 0 && (
+      <section class="detail-section">
+        <h2>相关数据库</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          {relatedDbs.map((r) => (
+            <a href={withBase(`databases/${r.slug}/`)} class="filter-tag" style="text-decoration: none;">
+              {r.name}
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- 链接 -->
+    <section class="detail-section" style="margin-top: var(--space-xl); padding-top: var(--space-lg); border-top: 1px solid var(--c-border);">
+      {db.officialWebsite && (
+        <a
+          href={db.officialWebsite}
+          target="_blank"
+          rel="noopener noreferrer"
+          style="display: inline-block; margin-right: var(--space-lg); font-weight: 600;"
+        >
+          🌐 官方网站
+        </a>
+      )}
+      {db.github && (
+        <a
+          href={db.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          style="display: inline-block; font-weight: 600;"
+        >
+          📦 GitHub
+        </a>
+      )}
+    </section>
+  </div>
+</BaseLayout>

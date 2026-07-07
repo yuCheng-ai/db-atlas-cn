@@ -1,0 +1,113 @@
+---
+import { type Database } from "../data/databases";
+import { categories } from "../data/categories";
+
+interface Props {
+  databases: Database[];
+}
+
+const { databases } = Astro.props;
+const dbJson = JSON.stringify(databases);
+const catJson = JSON.stringify(categories);
+---
+<div id="search-filter-root" class="search-filter-bar">
+  <div class="search-row">
+    <input
+      type="text"
+      id="search-input"
+      class="search-input"
+      placeholder="搜索数据库名称、类型、场景、关键词…"
+      autocomplete="off"
+    />
+  </div>
+  <div class="filter-tags" id="filter-tags">
+    <button class="filter-tag active" data-cat="">全部</button>
+  </div>
+  <div class="result-count" id="result-count"></div>
+</div>
+
+<script>
+  const DB: import("../data/databases").Database[] = JSON.parse(dbJson);
+  const CATS: import("../data/categories").Category[] = JSON.parse(catJson);
+
+  const searchInput = document.getElementById("search-input") as HTMLInputElement;
+  const filterTags = document.getElementById("filter-tags")!;
+  const resultCount = document.getElementById("result-count")!;
+  const dbGrid = document.querySelector(".db-grid") as HTMLElement | null;
+
+  let activeCategory = "";
+  let query = "";
+
+  // Build category filter buttons
+  const allBtn = filterTags.querySelector("button")!;
+  allBtn.addEventListener("click", () => setCategory(""));
+  for (const cat of CATS) {
+    const btn = document.createElement("button");
+    btn.className = "filter-tag";
+    btn.textContent = cat.name;
+    btn.dataset.cat = cat.slug;
+    btn.addEventListener("click", () => setCategory(cat.slug));
+    filterTags.appendChild(btn);
+  }
+
+  function setCategory(cat: string) {
+    activeCategory = cat;
+    document.querySelectorAll(".filter-tag").forEach((b) => {
+      b.classList.toggle("active", (b as HTMLElement).dataset.cat === cat);
+    });
+    filterAndRender();
+  }
+
+  searchInput.addEventListener("input", () => {
+    query = searchInput.value.trim().toLowerCase();
+    filterAndRender();
+  });
+
+  function match(db: typeof DB[number]): boolean {
+    if (activeCategory && !db.categories.includes(activeCategory)) return false;
+    if (!query) return true;
+
+    const haystack = [
+      db.name,
+      db.summary,
+      ...db.categories,
+      ...db.goodFor,
+      ...db.badFor,
+      ...db.typicalUseCases,
+    ]
+      .join(" ")
+      .toLowerCase();
+
+    // Also match category Chinese names
+    const catNames = CATS.filter((c) => db.categories.includes(c.slug))
+      .map((c) => c.name)
+      .join(" ");
+
+    return haystack.includes(query) || catNames.includes(query);
+  }
+
+  function filterAndRender() {
+    const filtered = DB.filter(match);
+    resultCount.textContent = `共 ${filtered.length} 个数据库`;
+
+    if (dbGrid) {
+      // Show/hide cards based on slug match
+      const cards = dbGrid.querySelectorAll<HTMLElement>(".db-card");
+      const slugSet = new Set(filtered.map((d) => d.slug));
+      let visibleCount = 0;
+      cards.forEach((card) => {
+        const slug = card.dataset.slug;
+        if (slugSet.has(slug ?? "")) {
+          card.style.display = "";
+          visibleCount++;
+        } else {
+          card.style.display = "none";
+        }
+      });
+      resultCount.textContent = `共 ${visibleCount} 个数据库`;
+    }
+  }
+
+  // Initial count
+  resultCount.textContent = `共 ${DB.length} 个数据库`;
+</script>

@@ -1,0 +1,68 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import DatabaseCard from "../components/DatabaseCard.astro";
+import SearchAndFilter from "../components/SearchAndFilter.astro";
+import { databases } from "../data/databases";
+import { categories } from "../data/categories";
+import { scenarios } from "../data/scenarios";
+import { withBase } from "../consts";
+---
+
+<BaseLayout>
+  <!-- Hero -->
+  <section class="hero">
+    <h1 class="hero-title">数据库选型地图</h1>
+    <p class="hero-subtitle">
+      面向开发者、Agent 系统和企业数据平台的数据库选择指南。了解不同数据库的特性、适用场景和组合方案。
+    </p>
+  </section>
+
+  <!-- 分类导航 -->
+  <section class="section-inner" style="padding-bottom: 0;">
+    <h2 class="section-title">浏览分类</h2>
+    <div class="cat-nav">
+      {categories.map((cat) => (
+        <a href={withBase(`categories/#${cat.slug}`)} class="cat-nav-item">
+          {cat.name}
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- 按场景选型入口 -->
+  <section class="section">
+    <div class="section-inner">
+      <h2 class="section-title">
+        按场景选型
+      </h2>
+    </div>
+    <div class="scenario-list">
+      {scenarios.map((s) => (
+        <div class="scenario-card">
+          <h3><a href={withBase(`scenarios/#${s.slug}`)}>{s.title}</a></h3>
+          <p>{s.description}</p>
+          <div class="scenario-recs">
+            {s.recommendations.map((r) => (
+              <span class="scenario-rec">{r.name}</span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- 数据库卡片列表 -->
+  <section class="section">
+    <div class="section-inner">
+      <h2 class="section-title">
+        全部数据库（{databases.length}）
+      </h2>
+    </div>
+    <SearchAndFilter databases={databases} />
+    <div class="db-grid">
+      {databases.map((db) => (
+        <DatabaseCard db={db} />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

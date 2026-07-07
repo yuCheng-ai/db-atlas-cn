@@ -1,0 +1,55 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { scenarios } from "../data/scenarios";
+import { databases } from "../data/databases";
+import { withBase } from "../consts";
+---
+
+<BaseLayout title="按场景选型" description="根据你的实际需求场景，找到合适的数据库组合方案">
+  <section class="hero" style="padding-bottom: var(--space-xl);">
+    <h1 class="hero-title" style="font-size: 2rem;">按场景选型</h1>
+    <p class="hero-subtitle">
+      根据实际的业务和技术需求，选择合适的数据库或数据库组合
+    </p>
+  </section>
+
+  <div style="max-width: var(--content-width); margin: 0 auto; padding: 0 var(--space-lg) var(--space-2xl);">
+    {scenarios.map((scenario) => (
+      <section id={scenario.slug} style="margin-bottom: var(--space-2xl);">
+        <h2 style="font-size: 1.3rem; font-weight: 700; margin-bottom: var(--space-sm);">
+          {scenario.title}
+        </h2>
+        <p style="color: var(--c-text-secondary); margin-bottom: var(--space-md);">
+          {scenario.description}
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-md);">
+          {scenario.recommendations.map((rec) => {
+            const db = databases.find((d) => d.slug === rec.slug);
+            if (!db) return null;
+            return (
+              <div style="background: var(--c-surface); border: 1px solid var(--c-border); border-radius: var(--radius-lg); padding: var(--space-md);">
+                <h3 style="font-size: 1.05rem; margin-bottom: 4px;">
+                  <a href={withBase(`databases/${db.slug}/`)}>{db.name}</a>
+                </h3>
+                <p style="font-size: 0.85rem; color: var(--c-text-secondary); margin-bottom: var(--space-sm);">
+                  {rec.why}
+                </p>
+                <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+                  {db.categories.map((cat) => (
+                    <span class="db-card-tag">{cat}</span>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div style="background: #f0f4ff; border-radius: var(--radius); padding: var(--space-md); font-size: 0.9rem; color: var(--c-text-secondary); line-height: 1.8;">
+          <strong style="color: var(--c-text);">💡 说明：</strong>
+          {scenario.explanation}
+        </div>
+      </section>
+    ))}
+  </div>
+</BaseLayout>
