@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { projectPlaybooks } from "../data/playbooks";
+---
+<BaseLayout title="项目手册" description="不同项目类型的数据库架构手册">
+  <section class="hero">
+    <span class="kicker">Architecture Playbook</span>
+    <h1 class="hero-title">按项目类型看数据库架构</h1>
+    <p class="hero-subtitle">不是介绍数据库，而是回答真实项目应该怎么组合。</p>
+  </section>
+
+  <div class="section-inner">
+    {projectPlaybooks.map((book) => (
+      <article id={book.slug} class="playbook-card">
+        <h2>{book.title}</h2>
+        <p class="section-lead">{book.summary}</p>
+        <div class="playbook-grid">
+          <div><h3>适用场景</h3><ul>{book.useWhen.map(x => <li>{x}</li>)}</ul></div>
+          <div><h3>最小方案</h3><ul>{book.minimalStack.map(x => <li>{x}</li>)}</ul></div>
+          <div><h3>生产方案</h3><ul>{book.productionStack.map(x => <li>{x}</li>)}</ul></div>
+          <div><h3>升级触发</h3><p>{book.upgradeTrigger}</p></div>
+        </div>
+        <div class="boundary-box">
+          <strong>数据边界：</strong>{book.dataBoundary.join("；")}
+        </div>
+        <ul class="avoid-list">{book.avoid.map(x => <li>{x}</li>)}</ul>
+      </article>
+    ))}
+  </div>
+</BaseLayout>

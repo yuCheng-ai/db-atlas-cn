@@ -1,0 +1,40 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { decisionSignals, solutionBundles } from "../data/solutions";
+import { withBase } from "../consts";
+---
+<BaseLayout title="静态选型向导" description="不接后端、不接 AI 的静态数据库选型规则">
+  <section class="hero">
+    <span class="kicker">Static Decision Guide</span>
+    <h1 class="hero-title">静态站也可以做选型决策</h1>
+    <p class="hero-subtitle">这里不是 AI 问答，而是把常见场景、判断条件和组合方案做成可浏览的规则地图。</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href={withBase("stacks/")}>查看组合方案</a>
+      <a class="btn" href={withBase("matrix/")}>比较数据库</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <h2 class="section-title">选型前先回答这些问题</h2>
+      <p class="section-lead">这些问题全部来自静态数据文件，适合 GitHub Pages 部署，不需要数据库、服务端或模型接口。</p>
+      <div class="signal-list">
+        {decisionSignals.map((s) => <div class="signal-item"><strong>{s.label}</strong><span>{s.value}</span></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <h2 class="section-title">快速入口</h2>
+      <div class="decision-grid">
+        {solutionBundles.map((s) => (
+          <a class="decision-card" href={withBase(`stacks/#${s.slug}`)}>
+            <h3>{s.shortTitle}</h3>
+            <p>{s.description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

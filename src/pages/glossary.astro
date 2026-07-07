@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { glossaryTerms } from "../data/glossary";
+---
+<BaseLayout title="术语表" description="数据库架构术语解释">
+  <section class="hero">
+    <span class="kicker">Database Glossary</span>
+    <h1 class="hero-title">数据库架构术语地图</h1>
+    <p class="hero-subtitle">降低学习门槛，用一句话理解每个概念什么时候有价值。</p>
+  </section>
+  <div class="section-inner">
+    <div class="glossary-grid">
+      {glossaryTerms.map((item) => (
+        <article class="glossary-card">
+          <span class="mistake-label">{item.category}</span>
+          <h2>{item.term}</h2>
+          <p>{item.plain}</p>
+          <p><strong>什么时候有用：</strong>{item.whenItMatters}</p>
+          <div class="layer-choices">{item.related.map(x => <span class="layer-choice">{x}</span>)}</div>
+        </article>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

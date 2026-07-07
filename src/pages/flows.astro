@@ -1,0 +1,43 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { decisionFlows } from "../data/flows";
+import { withBase } from "../consts";
+---
+<BaseLayout title="选型流程" description="静态数据库选型流程图">
+  <section class="hero">
+    <span class="kicker">Static Flowchart</span>
+    <h1 class="hero-title">数据库选型流程图</h1>
+    <p class="hero-subtitle">用固定规则把常见数据库问题拆开：主库、搜索、向量、图谱、分析、时序，各走各的路径。</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href={withBase("stacks/")}>看组合方案</a>
+      <a class="btn" href={withBase("playbooks/")}>看项目手册</a>
+    </div>
+  </section>
+
+  <div class="section-inner">
+    {decisionFlows.map((flow) => (
+      <section id={flow.slug} class="flow-section">
+        <div class="stack-header">
+          <div>
+            <h2>{flow.title}</h2>
+            <p class="section-lead">{flow.summary}</p>
+          </div>
+          <div class="stack-rule">静态判断链：问题 → 触发条件 → 推荐方向 → 下一步</div>
+        </div>
+        <div class="flow-list">
+          {flow.paths.map((path, index) => (
+            <article class="flow-card">
+              <div class="flow-index">{String(index + 1).padStart(2, "0")}</div>
+              <div>
+                <h3>{path.question}</h3>
+                <p><strong>触发条件：</strong>{path.when}</p>
+                <p><strong>推荐：</strong>{path.recommend}</p>
+                <p><strong>下一步：</strong>{path.next}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    ))}
+  </div>
+</BaseLayout>

@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+const items = [
+  ["RAG 一定要上大型向量数据库", "先判断规模。很多项目 PostgreSQL + pgvector 已经足够。"],
+  ["图数据库就是知识图谱", "Neo4j 擅长属性图关系，RDF/OWL/SPARQL 更适合本体推理。"],
+  ["搜索直接用 SQL LIKE", "正式搜索需要分词、排序、高亮和索引。"],
+  ["数据库越多越先进", "多数据库意味着更多同步、备份、监控和运维成本。"],
+  ["一开始就设计超大架构", "先用最简单可维护方案，根据真实瓶颈升级。"],
+];
+---
+<BaseLayout title="常见误区" description="数据库架构设计中的常见误区">
+  <section class="hero"><span class="kicker">Engineering Notes</span><h1 class="hero-title">不要为技术复杂度买单</h1><p class="hero-subtitle">数据库选型的核心不是追求先进，而是匹配问题。</p></section>
+  <div class="section-inner">
+    {items.map(i => <article class="mistake-card"><div class="mistake-wrong"><span class="mistake-label">误区</span><h2>{i[0]}</h2></div><div><span class="mistake-label">正确思路</span><p>{i[1]}</p></div></article>)}
+  </div>
+</BaseLayout>
