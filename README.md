@@ -14,36 +14,10 @@
 ## 🚀 本地运行
 
 ```bash
-# 安装依赖
 npm install
-
-# 启动开发服务器
-npm run dev
-
-# 构建生产版本
-npm run build
-
-# 预览构建结果
-npm run preview
-```
-
-## 📦 部署到 GitHub Pages
-
-### 自动部署（推荐）
-
-本项目包含 GitHub Actions workflow（`.github/workflows/deploy.yml`）。推送代码到 `main` 分支后，GitHub Actions 会自动构建并部署到 GitHub Pages。
-
-### 配置说明
-
-1. 在 GitHub 仓库的 **Settings → Pages** 中，将 Source 设置为 **GitHub Actions**。
-2. `astro.config.mjs` 中的 `base` 已设置为 `'/db-atlas-cn/'`。如果你的仓库名不同，请修改该配置。
-3. 如果使用自定义域名，将 `base` 改为 `'/'` 并配置 CNAME。
-
-### 手动部署
-
-```bash
-npm run build
-# 将 dist/ 目录部署到任意静态托管服务
+npm run dev      # 启动开发服务器
+npm run build    # 构建
+npm run preview  # 预览构建结果
 ```
 
 ## 📁 项目结构
