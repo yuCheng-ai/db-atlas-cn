@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { databases } from "../data/databases";
+---
+<BaseLayout title="比较矩阵" description="数据库能力比较矩阵">
+  <section class="hero"><span class="kicker">Comparison Matrix</span><h1 class="hero-title">数据库能力地图</h1><p class="hero-subtitle">快速判断不同数据库适合解决什么问题。</p></section>
+  <div class="section-inner">
+    <div class="matrix-wrap">
+      <table class="matrix-table">
+        <thead><tr><th>数据库</th><th>分类</th><th>适合</th><th>部署</th><th>难度</th><th>成熟度</th></tr></thead>
+        <tbody>
+          {databases.map(db => <tr><td><strong>{db.name}</strong></td><td>{db.categories.join(" / ")}</td><td class="matrix-note">{db.goodFor.slice(0,3).join("、")}</td><td>{db.deployment.join("、")}</td><td>{db.difficulty}</td><td>{db.maturity}</td></tr>)}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</BaseLayout>
