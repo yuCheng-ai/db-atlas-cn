@@ -5,10 +5,12 @@ const currentPath = Astro.url.pathname;
 
 const navItems = [
   { href: BASE, label: "首页" },
-  { href: withBase("decision/"), label: "选型向导" },
+  { href: withBase("flows/"), label: "选型流程" },
+  { href: withBase("playbooks/"), label: "项目手册" },
   { href: withBase("stacks/"), label: "组合方案" },
   { href: withBase("databases/"), label: "数据库" },
   { href: withBase("matrix/"), label: "比较矩阵" },
+  { href: withBase("glossary/"), label: "术语表" },
   { href: withBase("learning-path/"), label: "学习路径" },
 ];
 
