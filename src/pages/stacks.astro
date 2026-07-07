@@ -1,0 +1,39 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { solutionBundles } from "../data/solutions";
+---
+<BaseLayout title="组合方案" description="数据库组合架构方案">
+  <section class="hero">
+    <span class="kicker">Architecture Recipes</span>
+    <h1 class="hero-title">真实项目通常是数据库组合</h1>
+    <p class="hero-subtitle">主库、搜索、向量、分析、图谱不是竞争关系，而是不同职责。</p>
+  </section>
+  <div class="section-inner">
+    {solutionBundles.map((s) => (
+      <section id={s.slug} class="stack-section">
+        <div class="stack-header">
+          <div>
+            <h2>{s.title}</h2>
+            <p class="section-lead">{s.description}</p>
+          </div>
+          <div class="stack-rule">{s.decisionRule}</div>
+        </div>
+        <div class="stack-grid">
+          <div class="stack-card">
+            <h3>简单起步</h3>
+            <div class="layer-list">
+              {s.startSimple.map((l) => <div class="layer-card"><div class="layer-role">{l.role}</div><div class="layer-choices">{l.choices.map(c => <span class="layer-choice">{c}</span>)}</div><div class="layer-note">{l.note}</div></div>)}
+            </div>
+          </div>
+          <div class="stack-card">
+            <h3>规模增长</h3>
+            <div class="layer-list">
+              {s.scaleUp.map((l) => <div class="layer-card"><div class="layer-role">{l.role}</div><div class="layer-choices">{l.choices.map(c => <span class="layer-choice">{c}</span>)}</div><div class="layer-note">{l.note}</div></div>)}
+            </div>
+          </div>
+        </div>
+        <ul class="avoid-list">{s.avoid.map(a => <li>{a}</li>)}</ul>
+      </section>
+    ))}
+  </div>
+</BaseLayout>
